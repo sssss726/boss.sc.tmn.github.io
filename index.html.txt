@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Генератор QR-кода</title>
+<!-- Библиотека jsQR -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        margin: 0;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+    h1 {
+        margin-bottom: 20px;
+    }
+    input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #qrcode {
+        margin-top: 30px;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+    #signature {
+        margin-top: 40px;
+        font-size: 16px;
+        color: #555;
+    }
+</style>
+</head>
+<body>
+
+<h1>Генератор QR-кода</h1>
+
+<div>
+    <input type="text" id="inputText" placeholder="Введите текст или ссылку" />
+    <button onclick="generateQRCode()">Создать QR-код</button>
+</div>
+
+<div id="qrcode"></div>
+
+<div id="signature">СЦ Тюмень</div>
+
+<script>
+    // Переменная для хранения текущего QR-кода
+    let qr;
+
+    function generateQRCode() {
+        const input = document.getElementById('inputText').value.trim();
+        if (!input) {
+            alert('Пожалуйста, введите текст или ссылку');
+            return;
+        }
+
+        // Получить текущую дату и время
+        const now = new Date();
+        const dateStr = now.toLocaleString('ru-RU'); // формат по-русски
+
+        // Объединяем введённый текст и дату/время
+        const textForQR = `${input}\n\nСоздано: ${dateStr}`;
+
+        // Очистить предыдущий QR-код
+        if (qr) {
+            qr.clear();
+            qr.remove();
+        }
+
+        // Создать новый QR-код
+        qr = new QRCode(document.getElementById("qrcode"), {
+            text: textForQR,
+            width: 256,
+            height: 256,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    }
+</script>
+
+</body>
+</html>
